@@ -4,7 +4,7 @@ include makefile.top
 
 .PHONY: $(TARGETS) tar
 
-TARGETS := N3000 labeler prometheus_fpgainfo_exporter
+TARGETS := N5010 prometheus_fpgainfo_exporter
 ifeq ($(BUILD_SRIO_FEC),yes)
 	TARGETS += sriov-fec
 endif
