@@ -28,6 +28,7 @@ vet:
 
 # Build/push exporter image
 image:
+	cp -av ../common/ .
 	cp ../LICENSE TEMP_LICENSE_COPY
 	$(PODMAN) build . -t $(MONITORING_IMAGE) $(CONTAINER_BUILD_ARGS)
 

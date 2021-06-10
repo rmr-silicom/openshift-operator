@@ -99,8 +99,10 @@ kustomize:
 
 .PHONY: image-daemon push-daemon
 image-daemon:
+	cp -av ../common/ .
 	cp ../LICENSE TEMP_LICENSE_COPY
 	$(PODMAN) build . -f Dockerfile.daemon -t $(DAEMON_IMAGE) $(CONTAINER_BUILD_ARGS)
+
 push-daemon:
 	$(PODMAN) push $(DAEMON_IMAGE) $(CONTAINER_PUSH_ARGS)
 

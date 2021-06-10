@@ -17,6 +17,7 @@ vet:
 
 # Build the docker image
 image:
+	cp -av ../common/ .
 	cp ../LICENSE TEMP_LICENSE_COPY
 	$(PODMAN) build . -t $(LABELER_IMAGE)  $(CONTAINER_BUILD_ARGS)
 
