@@ -14,7 +14,7 @@ OPAE_IMAGE ?= $(IMAGE_REGISTRY)/opae:$(VERSION)
 RUNTIME_IMAGE ?= registry.access.redhat.com/ubi8/ubi-minimal
 
 OPERATOR_IMAGE ?= $(IMAGE_REGISTRY)/intel-fpga-operator:$(VERSION)
-DRIVER_CONTAINER_IMAGE ?= $(IMAGE_REGISTRY)/dfl-kmod:$(VERSION)
+DRIVER_CONTAINER_IMAGE ?= $(IMAGE_REGISTRY)/dfl-kmod-drivercontainer:$(VERSION)
 DRIVER_IMAGE ?= $(DRIVER_CONTAINER_IMAGE)--$(KERNEL_VERSION)
 DAEMON_IMAGE ?= $(IMAGE_REGISTRY)/intel-fpga-daemon:$(VERSION)
 LABELER_IMAGE ?= $(IMAGE_REGISTRY)/intel-fpga-labeler:$(VERSION)
