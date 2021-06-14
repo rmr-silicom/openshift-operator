@@ -225,7 +225,7 @@ func (r *N3000NodeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	n3000node := &fpgav1.N3000Node{}
 	if err := r.Client.Get(ctx, req.NamespacedName, n3000node); err != nil {
 		if k8serrors.IsNotFound(err) {
-			log.V(2).Info("reconciled n3000node not found")
+			log.V(2).Info("reconciled n3000node not found : ", req.NamespacedName, n3000node)
 			return ctrl.Result{}, r.CreateEmptyN3000NodeIfNeeded(r.Client)
 		}
 		log.Error(err, "Get(n3000node) failed")
