@@ -72,12 +72,12 @@ var _ = Describe("N5010 Daemon Tests", func() {
 
 	var clusterConfig *fpgav1.N5010Cluster
 
-	var n3000node *fpgav1.N5010Node
+	var n5010node *fpgav1.N5010Node
 
 	var request ctrl.Request
 	var reconciler N5010NodeReconciler
 
-	const tempNamespaceName = "n3000node"
+	const tempNamespaceName = "n5010node"
 	var namespace = os.Getenv("INTEL_FPGA_NAMESPACE")
 
 	log := klogr.New()
@@ -94,7 +94,7 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			doDeconf = false
 			removeCluster = false
 
-			n3000node = &fpgav1.N5010Node{
+			n5010node = &fpgav1.N5010Node{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "gf",
 					Namespace: namespace,
@@ -167,13 +167,13 @@ var _ = Describe("N5010 Daemon Tests", func() {
 
 		var _ = It("check updateFlashCondition 2", func() {
 
-			n3000node = &fpgav1.N5010Node{
+			n5010node = &fpgav1.N5010Node{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "gfgf",
 					Namespace: namespace,
 				},
 			}
-			err := k8sClient.Create(context.Background(), n3000node)
+			err := k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 
@@ -190,10 +190,10 @@ var _ = Describe("N5010 Daemon Tests", func() {
 
 			Expect(reconciler).ToNot(Equal(nil))
 
-			reconciler.updateFlashCondition(n3000node, metav1.ConditionFalse, FlashFailed, "OK")
+			reconciler.updateFlashCondition(n5010node, metav1.ConditionFalse, FlashFailed, "OK")
 		})
 
-		var _ = It("check updateFlashCondition no n3000node", func() {
+		var _ = It("check updateFlashCondition no n5010node", func() {
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 
@@ -210,11 +210,11 @@ var _ = Describe("N5010 Daemon Tests", func() {
 
 			Expect(reconciler).ToNot(Equal(nil))
 
-			reconciler.updateFlashCondition(n3000node, metav1.ConditionFalse, FlashFailed, "OK")
+			reconciler.updateFlashCondition(n5010node, metav1.ConditionFalse, FlashFailed, "OK")
 		})
 
 		var _ = It("check updateFlashCondition", func() {
-			err := k8sClient.Create(context.Background(), n3000node)
+			err := k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
@@ -232,13 +232,13 @@ var _ = Describe("N5010 Daemon Tests", func() {
 
 			Expect(reconciler).ToNot(Equal(nil))
 
-			reconciler.updateFlashCondition(n3000node, metav1.ConditionFalse, FlashFailed, "OK")
+			reconciler.updateFlashCondition(n5010node, metav1.ConditionFalse, FlashFailed, "OK")
 		})
 
 		var _ = It("check updateFlashCondition True", func() {
 
 			var err error
-			n3000node = &fpgav1.N5010Node{
+			n5010node = &fpgav1.N5010Node{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "gf2",
 					Namespace: namespace,
@@ -263,18 +263,18 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			err = (reconciler).CreateEmptyN5010NodeIfNeeded(k8sClient)
 			Expect(err).ToNot(HaveOccurred())
 
-			reconciler.updateFlashCondition(n3000node, metav1.ConditionTrue, FlashFailed, "OK")
+			reconciler.updateFlashCondition(n5010node, metav1.ConditionTrue, FlashFailed, "OK")
 		})
 
 		var _ = It("check updateFlash failure ", func() {
 
-			n3000node = &fpgav1.N5010Node{
+			n5010node = &fpgav1.N5010Node{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "gfgf",
 					Namespace: namespace,
 				},
 			}
-			err := k8sClient.Create(context.Background(), n3000node)
+			err := k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 
@@ -296,19 +296,19 @@ var _ = Describe("N5010 Daemon Tests", func() {
 				Status:             metav1.ConditionFalse,
 				Reason:             string(FlashFailed),
 				Message:            "message",
-				ObservedGeneration: n3000node.GetGeneration(),
+				ObservedGeneration: n5010node.GetGeneration(),
 			}
 
 			reportErrorIn = 1
 			fpgaInfoExec = fakeFpgaInfoDelayed
 
 			// Error reported by FPGA Manager
-			err = reconciler.updateStatus(n3000node, []metav1.Condition{fc})
+			err = reconciler.updateStatus(n5010node, []metav1.Condition{fc})
 			Expect(err).To(HaveOccurred())
 			Expect(reportErrorIn).To(Equal(0))
 
 			// Error reported by Fortville Manager
-			err = reconciler.updateStatus(n3000node, []metav1.Condition{fc})
+			err = reconciler.updateStatus(n5010node, []metav1.Condition{fc})
 			Expect(err).To(HaveOccurred())
 
 			// restore default value
@@ -357,7 +357,7 @@ var _ = Describe("N5010 Daemon Tests", func() {
 		var _ = It("will create node config", func() {
 			var err error
 
-			err = k8sClient.Create(context.Background(), n3000node)
+			err = k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
@@ -469,7 +469,7 @@ var _ = Describe("N5010 Daemon Tests", func() {
 		var _ = It("will fail to create node config because of missing MACS and FPGA", func() {
 			var err error
 
-			err = k8sClient.Create(context.Background(), n3000node)
+			err = k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
@@ -501,14 +501,14 @@ var _ = Describe("N5010 Daemon Tests", func() {
 		var _ = It("will fail with wrong FPGA preconditions", func() {
 			var err error
 
-			n3000node.Spec.FPGA = []fpgav1.N5010Fpga{
+			n5010node.Spec.FPGA = []fpgav1.N5010Fpga{
 				{
 					PCIAddr:      "ffff:ff:01.1",
 					UserImageURL: "/tmp/fake.bin",
 				},
 			}
 
-			err = k8sClient.Create(context.Background(), n3000node)
+			err = k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
@@ -539,8 +539,8 @@ var _ = Describe("N5010 Daemon Tests", func() {
 		var _ = It("will fail because of Flash problem", func() {
 			var err error
 
-			n3000node.Spec.FPGA = nil
-			n3000node.Spec.Fortville = &fpgav1.N5010Fortville{
+			n5010node.Spec.FPGA = nil
+			n5010node.Spec.Fortville = &fpgav1.N5010Fortville{
 				MACs: []fpgav1.FortvilleMAC{
 					{
 						MAC: "00:00:00:00:00:00",
@@ -549,7 +549,7 @@ var _ = Describe("N5010 Daemon Tests", func() {
 				FirmwareURL: "/tmp/fake/bin",
 			}
 
-			err = k8sClient.Create(context.Background(), n3000node)
+			err = k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
@@ -580,8 +580,8 @@ var _ = Describe("N5010 Daemon Tests", func() {
 		var _ = It("will run Reconcile with misconfiugred DrainHelper", func() {
 			var err error
 
-			n3000node.Spec.FPGA = nil
-			n3000node.Spec.Fortville = &fpgav1.N5010Fortville{
+			n5010node.Spec.FPGA = nil
+			n5010node.Spec.Fortville = &fpgav1.N5010Fortville{
 				MACs: []fpgav1.FortvilleMAC{
 					{
 						MAC: "64:4c:36:11:1b:a8",
@@ -590,7 +590,7 @@ var _ = Describe("N5010 Daemon Tests", func() {
 				FirmwareURL: "http://www.test.com/fortville/nvmPackage.tag.gz",
 			}
 
-			err = k8sClient.Create(context.Background(), n3000node)
+			err = k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
@@ -636,7 +636,7 @@ var _ = Describe("N5010 Daemon Tests", func() {
 		var _ = It("check CreateEmptyN5010NodeIfNeeded", func() {
 			var err error
 
-			err = k8sClient.Create(context.Background(), n3000node)
+			err = k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user

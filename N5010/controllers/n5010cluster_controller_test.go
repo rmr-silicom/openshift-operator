@@ -22,14 +22,14 @@ import (
 var _ = Describe("ExampleTest", func() {
 
 	var node *corev1.Node
-	var clusterConfig *fpgav1.N3000Cluster
+	var clusterConfig *fpgav1.N5010Cluster
 	var request ctrl.Request
-	var reconciler N3000ClusterReconciler
+	var reconciler N5010ClusterReconciler
 	log := klogr.New()
 	doDeconf := true
 	removeCluster := true
 	namespacedName := types.NamespacedName{
-		Name:      DEFAULT_N3000_CONFIG_NAME,
+		Name:      DEFAULT_N5010_CONFIG_NAME,
 		Namespace: namespace,
 	}
 
@@ -47,13 +47,13 @@ var _ = Describe("ExampleTest", func() {
 			},
 		}
 
-		clusterConfig = &fpgav1.N3000Cluster{
+		clusterConfig = &fpgav1.N5010Cluster{
 			ObjectMeta: v1.ObjectMeta{
-				Name:      DEFAULT_N3000_CONFIG_NAME,
+				Name:      DEFAULT_N5010_CONFIG_NAME,
 				Namespace: namespace,
 			},
-			Spec: fpgav1.N3000ClusterSpec{
-				Nodes: []fpgav1.N3000ClusterNode{
+			Spec: fpgav1.N5010ClusterSpec{
+				Nodes: []fpgav1.N5010ClusterNode{
 					{
 						NodeName: "dummy",
 						Fortville: &fpgav1.N3000Fortville{
@@ -71,8 +71,8 @@ var _ = Describe("ExampleTest", func() {
 		if doDeconf {
 			err = k8sClient.Get(context.TODO(), namespacedName, clusterConfig)
 			Expect(err).NotTo(HaveOccurred())
-			clusterConfig.Spec = fpgav1.N3000ClusterSpec{
-				Nodes: []fpgav1.N3000ClusterNode{},
+			clusterConfig.Spec = fpgav1.N5010ClusterSpec{
+				Nodes: []fpgav1.N5010ClusterNode{},
 			}
 
 			err = k8sClient.Update(context.TODO(), clusterConfig)
@@ -104,8 +104,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -114,7 +114,7 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
@@ -122,7 +122,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 
@@ -159,8 +159,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -169,7 +169,7 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
@@ -177,7 +177,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(rec_err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(1))
@@ -186,8 +186,8 @@ var _ = Describe("ExampleTest", func() {
 			// switch nodes
 			err = k8sClient.Get(context.TODO(), namespacedName, clusterConfig)
 			Expect(err).NotTo(HaveOccurred())
-			clusterConfig.Spec = fpgav1.N3000ClusterSpec{
-				Nodes: []fpgav1.N3000ClusterNode{
+			clusterConfig.Spec = fpgav1.N5010ClusterSpec{
+				Nodes: []fpgav1.N5010ClusterNode{
 					{
 						NodeName: "dummynode2",
 						Fortville: &fpgav1.N3000Fortville{
@@ -205,7 +205,7 @@ var _ = Describe("ExampleTest", func() {
 			_, rec_err = reconciler.Reconcile(context.TODO(), request)
 			Expect(rec_err).ToNot(HaveOccurred())
 
-			nodeConfigs = &fpgav1.N3000NodeList{}
+			nodeConfigs = &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(1))
@@ -232,8 +232,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -242,7 +242,7 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
@@ -250,7 +250,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(rec_err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(1))
@@ -265,7 +265,7 @@ var _ = Describe("ExampleTest", func() {
 			_, rec_err = reconciler.Reconcile(context.TODO(), request)
 			Expect(rec_err).ToNot(HaveOccurred())
 
-			nodeConfigs = &fpgav1.N3000NodeList{}
+			nodeConfigs = &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(1))
@@ -291,8 +291,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -301,7 +301,7 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
@@ -309,7 +309,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(rec_err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(1))
@@ -319,7 +319,7 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Get(context.TODO(), namespacedName, clusterConfig)
 			Expect(err).NotTo(HaveOccurred())
 
-			clusterConfig.Spec.Nodes = []fpgav1.N3000ClusterNode{
+			clusterConfig.Spec.Nodes = []fpgav1.N5010ClusterNode{
 				{
 					NodeName: "dummynode2",
 					Fortville: &fpgav1.N3000Fortville{
@@ -334,7 +334,7 @@ var _ = Describe("ExampleTest", func() {
 			_, rec_err = reconciler.Reconcile(context.TODO(), request)
 			Expect(rec_err).ToNot(HaveOccurred())
 
-			nodeConfigs = &fpgav1.N3000NodeList{}
+			nodeConfigs = &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -351,8 +351,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).To(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -361,7 +361,7 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
@@ -369,7 +369,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -391,8 +391,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -401,7 +401,7 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: "wrongNamespace",
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
@@ -409,7 +409,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -427,8 +427,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -437,7 +437,7 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
@@ -445,7 +445,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(1))
@@ -458,13 +458,13 @@ var _ = Describe("ExampleTest", func() {
 			err := k8sClient.Create(context.TODO(), node)
 			Expect(err).ToNot(HaveOccurred())
 
-			clusterConfig.Spec.Nodes = []fpgav1.N3000ClusterNode{}
+			clusterConfig.Spec.Nodes = []fpgav1.N5010ClusterNode{}
 			// simulate creation of cluster config by the user
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -473,11 +473,11 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -486,7 +486,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs = &fpgav1.N3000NodeList{}
+			nodeConfigs = &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 		})
@@ -497,7 +497,7 @@ var _ = Describe("ExampleTest", func() {
 			err := k8sClient.Create(context.TODO(), node)
 			Expect(err).ToNot(HaveOccurred())
 
-			clusterConfig.Spec.Nodes = []fpgav1.N3000ClusterNode{
+			clusterConfig.Spec.Nodes = []fpgav1.N5010ClusterNode{
 				{
 					NodeName: "dummy",
 					Fortville: &fpgav1.N3000Fortville{
@@ -518,8 +518,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -528,11 +528,11 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -541,7 +541,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs = &fpgav1.N3000NodeList{}
+			nodeConfigs = &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(1))
@@ -555,7 +555,7 @@ var _ = Describe("ExampleTest", func() {
 			err := k8sClient.Create(context.TODO(), node)
 			Expect(err).ToNot(HaveOccurred())
 
-			clusterConfig.Spec.Nodes = []fpgav1.N3000ClusterNode{
+			clusterConfig.Spec.Nodes = []fpgav1.N5010ClusterNode{
 				{
 					NodeName: "dummy",
 					Fortville: &fpgav1.N3000Fortville{
@@ -576,8 +576,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -586,11 +586,11 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -599,7 +599,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs = &fpgav1.N3000NodeList{}
+			nodeConfigs = &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(1))
@@ -613,7 +613,7 @@ var _ = Describe("ExampleTest", func() {
 			err := k8sClient.Create(context.TODO(), node)
 			Expect(err).ToNot(HaveOccurred())
 
-			clusterConfig.Spec.Nodes = []fpgav1.N3000ClusterNode{
+			clusterConfig.Spec.Nodes = []fpgav1.N5010ClusterNode{
 				{
 					NodeName: "dummy",
 					Fortville: &fpgav1.N3000Fortville{
@@ -634,8 +634,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -644,11 +644,11 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -657,7 +657,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs = &fpgav1.N3000NodeList{}
+			nodeConfigs = &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -678,8 +678,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -688,11 +688,11 @@ var _ = Describe("ExampleTest", func() {
 			request = ctrl.Request{
 				NamespacedName: types.NamespacedName{
 					Namespace: namespace,
-					Name:      DEFAULT_N3000_CONFIG_NAME,
+					Name:      DEFAULT_N5010_CONFIG_NAME,
 				},
 			}
 
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -701,7 +701,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs = &fpgav1.N3000NodeList{}
+			nodeConfigs = &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))
@@ -725,8 +725,8 @@ var _ = Describe("ExampleTest", func() {
 			err = k8sClient.Create(context.TODO(), clusterConfig)
 			Expect(err).ToNot(HaveOccurred())
 
-			log = klogr.New().WithName("N3000ClusterReconciler-Test")
-			reconciler = N3000ClusterReconciler{
+			log = klogr.New().WithName("N5010ClusterReconciler-Test")
+			reconciler = N5010ClusterReconciler{
 				Client: k8sClient,
 				Scheme: scheme.Scheme,
 				Log:    log,
@@ -743,7 +743,7 @@ var _ = Describe("ExampleTest", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check if node config was created out of cluster config
-			nodeConfigs := &fpgav1.N3000NodeList{}
+			nodeConfigs := &fpgav1.N5010NodeList{}
 			err = k8sClient.List(context.TODO(), nodeConfigs)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(len(nodeConfigs.Items)).To(Equal(0))

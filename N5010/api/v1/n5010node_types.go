@@ -57,7 +57,7 @@ type N5010FpgaStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="Flash",type=string,JSONPath=`.status.conditions[?(@.type=="Flashed")].reason`
 
-// N5010Node is the Schema for the n3000nodes API
+// N5010Node is the Schema for the n5010nodes API
 // +operator-sdk:csv:customresourcedefinitions:displayName="N5010Node",resources={{N5010Node,v1,node}}
 type N5010Node struct {
 	metav1.TypeMeta   `json:",inline"`

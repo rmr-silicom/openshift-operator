@@ -24,7 +24,7 @@ spec:
         args:
         - --leader-elect
         - --zap-log-level=10
-        image: ryan_raasch/intel-fpga-operator:v2.0.0
+        image: ryan_raasch/intel-fpga-operator:v2.5.0
         imagePullPolicy: Always
         name: manager
         securityContext:
@@ -50,11 +50,11 @@ spec:
             memory: 20Mi
         env:
         - name: INTEL_FPGA_DAEMON_IMAGE
-          value: ryan_raasch/intel-fpga-daemon:v2.0.0
+          value: ryan_raasch/intel-fpga-daemon:v2.5.0
         - name: INTEL_FPGA_MONITORING_IMAGE
-          value: ryan_raasch/intel-fpga-monitoring:v2.0.0
+          value: ryan_raasch/intel-fpga-monitoring:v2.5.0
         - name: INTEL_FPGA_LABELER_IMAGE
-          value: ryan_raasch/intel-fpga-labeler:v2.0.0
+          value: ryan_raasch/intel-fpga-labeler:v2.5.0
         - name: INTEL_FPGA_NAMESPACE
           value: intel-fpga-operators
         - name: INTEL_FPGA_DRIVER_IMAGE

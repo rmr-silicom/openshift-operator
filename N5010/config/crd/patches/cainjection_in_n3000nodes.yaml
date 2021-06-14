@@ -7,4 +7,4 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     cert-manager.io/inject-ca-from: $(CERTIFICATE_NAMESPACE)/$(CERTIFICATE_NAME)
-  name: n3000nodes.fpga.intel.com
+  name: n5010nodes.fpga.intel.com

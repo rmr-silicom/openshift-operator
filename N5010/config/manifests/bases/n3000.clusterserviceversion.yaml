@@ -12,12 +12,12 @@ spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
-    - description: N3000Cluster is the Schema for the n3000clusters API
-      displayName: N3000Cluster
-      kind: N3000Cluster
-      name: n3000clusters.fpga.intel.com
+    - description: N5010Cluster is the Schema for the n5010clusters API
+      displayName: N5010Cluster
+      kind: N5010Cluster
+      name: n5010clusters.fpga.intel.com
       resources:
-      - kind: N3000Node
+      - kind: N5010Node
         name: node
         version: v1
       specDescriptors:
@@ -29,12 +29,12 @@ spec:
         displayName: Sync Status
         path: syncStatus
       version: v1
-    - description: N3000Node is the Schema for the n3000nodes API
-      displayName: N3000Node
-      kind: N3000Node
-      name: n3000nodes.fpga.intel.com
+    - description: N5010Node is the Schema for the n5010nodes API
+      displayName: N5010Node
+      kind: N5010Node
+      name: n5010nodes.fpga.intel.com
       resources:
-      - kind: N3000Node
+      - kind: N5010Node
         name: node
         version: v1
       specDescriptors:

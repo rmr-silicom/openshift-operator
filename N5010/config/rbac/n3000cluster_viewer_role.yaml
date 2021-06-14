@@ -1,16 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2020 Intel Corporation
 
-# permissions for end users to view n3000clusters.
+# permissions for end users to view n5010clusters.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: n3000cluster-viewer-role
+  name: n5010cluster-viewer-role
 rules:
 - apiGroups:
   - fpga.intel.com
   resources:
-  - n3000clusters
+  - n5010clusters
   verbs:
   - get
   - list
@@ -18,6 +18,6 @@ rules:
 - apiGroups:
   - fpga.intel.com
   resources:
-  - n3000clusters/status
+  - n5010clusters/status
   verbs:
   - get

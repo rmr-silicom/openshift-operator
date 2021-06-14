@@ -72,7 +72,7 @@ type N5010ClusterStatus struct {
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 
-// N5010Cluster is the Schema for the n3000clusters API
+// N5010Cluster is the Schema for the n5010clusters API
 // +operator-sdk:csv:customresourcedefinitions:displayName="N5010Cluster",resources={{N5010Node,v1,node}}
 type N5010Cluster struct {
 	metav1.TypeMeta   `json:",inline"`

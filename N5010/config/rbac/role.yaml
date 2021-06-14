@@ -39,7 +39,7 @@ rules:
 - apiGroups:
   - fpga.intel.com
   resources:
-  - n3000clusters
+  - n5010clusters
   verbs:
   - create
   - delete
@@ -51,7 +51,7 @@ rules:
 - apiGroups:
   - fpga.intel.com
   resources:
-  - n3000clusters/status
+  - n5010clusters/status
   verbs:
   - get
   - patch
@@ -59,7 +59,7 @@ rules:
 - apiGroups:
   - fpga.intel.com
   resources:
-  - n3000nodes
+  - n5010nodes
   verbs:
   - create
   - delete

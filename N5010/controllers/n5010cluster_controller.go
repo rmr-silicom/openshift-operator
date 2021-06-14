@@ -40,7 +40,7 @@ import (
 )
 
 const (
-	DEFAULT_N5010_CONFIG_NAME = "n3000"
+	DEFAULT_N5010_CONFIG_NAME = "n5010"
 )
 
 var log = ctrl.Log.WithName("N5010ClusterController")
@@ -64,7 +64,7 @@ type N5010ClusterReconciler struct {
 
 // +kubebuilder:rbac:groups=fpga.intel.com,resources=n5010clusters,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=fpga.intel.com,resources=n5010clusters/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=fpga.intel.com,resources=n3000nodes,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=fpga.intel.com,resources=n5010nodes,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups="",resources=nodes,verbs=list;watch
 // +kubebuilder:rbac:groups="",resources=namespaces,verbs=*
 // +kubebuilder:rbac:groups="",resources=services;serviceaccounts,verbs=*
@@ -99,18 +99,18 @@ func (r *N5010ClusterReconciler) Reconcile(ctx context.Context, req ctrl.Request
 		return ctrl.Result{}, nil
 	}
 
-	n3000nodes, err := r.splitClusterIntoNodes(ctx, clusterConfig)
+	n5010nodes, err := r.splitClusterIntoNodes(ctx, clusterConfig)
 	if err != nil {
 		log.Error(err, "cluster into nodes split failed")
 		return ctrl.Result{RequeueAfter: time.Second * 5}, err
 	}
 
-	if err = r.removeOldNodes(n3000nodes); err != nil {
+	if err = r.removeOldNodes(n5010nodes); err != nil {
 		log.Error(err, "removing old nodes failed")
 		return ctrl.Result{RequeueAfter: time.Second * 5}, err
 	}
 
-	for _, node := range n3000nodes {
+	for _, node := range n5010nodes {
 		err := r.updateOrCreateNodeConfig(node)
 		if err != nil {
 			log.Error(err, "create or update failed")
@@ -169,7 +169,7 @@ func (r *N5010ClusterReconciler) splitClusterIntoNodes(ctx context.Context,
 		return nil, err
 	}
 
-	var n3000Nodes []*fpgav1.N5010Node
+	var n5010Nodes []*fpgav1.N5010Node
 
 	for _, res := range n5010cluster.Spec.Nodes {
 		for _, node := range nodes.Items {
@@ -182,13 +182,13 @@ func (r *N5010ClusterReconciler) splitClusterIntoNodes(ctx context.Context,
 				nodeRes.Spec.FPGA = res.FPGA
 				nodeRes.Spec.DryRun = n5010cluster.Spec.DryRun
 				nodeRes.Spec.DrainSkip = n5010cluster.Spec.DrainSkip
-				n3000Nodes = append(n3000Nodes, nodeRes)
+				n5010Nodes = append(n5010Nodes, nodeRes)
 				break
 			}
 		}
 	}
 
-	return n3000Nodes, nil
+	return n5010Nodes, nil
 }
 
 func (r *N5010ClusterReconciler) removeOldNodes(newNodeCfgs []*fpgav1.N5010Node) error {

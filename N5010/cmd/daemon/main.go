@@ -80,7 +80,7 @@ func main() {
 	}
 
 	if err := daemon.CreateEmptyN5010NodeIfNeeded(directClient); err != nil {
-		setupLog.Error(err, "failed to create initial n3000node CR")
+		setupLog.Error(err, "failed to create initial n5010node CR")
 		os.Exit(1)
 	}
 
