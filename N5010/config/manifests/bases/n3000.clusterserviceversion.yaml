@@ -45,7 +45,7 @@ spec:
         displayName: FPGA
         path: fpga
       statusDescriptors:
-      - description: Provides information about N3000 Fortville invetory on the node
+      - description: Provides information about N5010 Fortville invetory on the node
         displayName: Fortville
         path: fortville
       - description: Provides information about FPGA inventory on the node

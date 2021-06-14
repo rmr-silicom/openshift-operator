@@ -9,8 +9,6 @@ import (
 	"os"
 	"os/exec"
 
-	dh "github.com/rmr-silicom/openshift-operator/common/pkg/drainhelper"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
@@ -20,17 +18,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	clientset "k8s.io/client-go/kubernetes"
-	restclient "k8s.io/client-go/rest"
 	"k8s.io/klog/v2/klogr"
 	ctrl "sigs.k8s.io/controller-runtime"
 )
 
 func setupManagers() {
-	cleanFortville()
-	nvmupdateExec = fakeNvmupdate
 	fpgaInfoExec = fakeFpgaInfo
-	fpgadiagExec = fakeFpgadiag
-	tarExec = fakeTar
 
 	fpgasUpdateExec = fakeFpgasUpdate
 	rsuExec = fakeRsu
@@ -43,11 +36,6 @@ func setupManagers() {
 	fakeRsuUpdateErrReturn = nil
 }
 func cleanUpHandlers() {
-	// Restore original Fortville handlers
-	nvmupdateExec = runExecWithLog
-	fpgadiagExec = runExec
-	ethtoolExec = runExec
-	tarExec = runExec
 
 	// Restore original FPGA manager handlers
 	fpgaInfoExec = runExec
@@ -88,7 +76,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 
 	var _ = Describe("Reconciler functionalities", func() {
 		BeforeEach(func() {
-			cleanFortville()
 			cleanFPGA()
 			cleanUpHandlers()
 			doDeconf = false
@@ -109,8 +96,7 @@ var _ = Describe("N5010 Daemon Tests", func() {
 				Spec: fpgav1.N5010ClusterSpec{
 					Nodes: []fpgav1.N5010ClusterNode{
 						{
-							NodeName:  "dummy",
-							Fortville: &fpgav1.N5010Fortville{},
+							NodeName: "dummy",
 						},
 					},
 				},
@@ -180,9 +166,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			reconciler = N5010NodeReconciler{Client: k8sClient, log: log,
 				namespace: namespace,
 				nodeName:  "dummy",
-				fortville: FortvilleManager{
-					Log: log.WithName("fortvilleManager"),
-				},
 				fpga: FPGAManager{
 					Log: log.WithName("fpgaManager"),
 				},
@@ -200,9 +183,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			reconciler = N5010NodeReconciler{Client: k8sClient, log: log,
 				namespace: namespace,
 				nodeName:  "dummy",
-				fortville: FortvilleManager{
-					Log: log.WithName("fortvilleManager"),
-				},
 				fpga: FPGAManager{
 					Log: log.WithName("fpgaManager"),
 				},
@@ -222,9 +202,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			reconciler = N5010NodeReconciler{Client: k8sClient, log: log,
 				namespace: namespace,
 				nodeName:  "dummy",
-				fortville: FortvilleManager{
-					Log: log.WithName("fortvilleManager"),
-				},
 				fpga: FPGAManager{
 					Log: log.WithName("fpgaManager"),
 				},
@@ -250,9 +227,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			reconciler = N5010NodeReconciler{Client: k8sClient, log: log,
 				namespace: namespace,
 				nodeName:  "dummy",
-				fortville: FortvilleManager{
-					Log: log.WithName("fortvilleManager"),
-				},
 				fpga: FPGAManager{
 					Log: log.WithName("fpgaManager"),
 				},
@@ -281,9 +255,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			reconciler = N5010NodeReconciler{Client: k8sClient, log: log,
 				namespace: namespace,
 				nodeName:  "dummy",
-				fortville: FortvilleManager{
-					Log: log.WithName("fortvilleManager"),
-				},
 				fpga: FPGAManager{
 					Log: log.WithName("fpgaManager"),
 				},
@@ -324,19 +295,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			err = reconciler.verifySpec(&emptyNode)
 			Expect(err).ToNot(HaveOccurred())
 
-			var noFirmwareUrlNode fpgav1.N5010Node
-
-			noFirmwareUrlNode.Spec.Fortville = &fpgav1.N5010Fortville{
-				MACs: []fpgav1.FortvilleMAC{
-					{
-						MAC: "00:00:00:00:00:00",
-					},
-				},
-			}
-			err = reconciler.verifySpec(&noFirmwareUrlNode)
-			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("Missing Fortville FirmwareURL"))
-
 			var noUserimageUrlNode fpgav1.N5010Node
 
 			noUserimageUrlNode.Spec.FPGA = []fpgav1.N5010Fpga{
@@ -361,7 +319,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 			request = ctrl.Request{
@@ -383,7 +340,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			var err error
 
 			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 			request = ctrl.Request{
@@ -405,7 +361,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			var err error
 
 			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 
@@ -427,7 +382,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			var err error
 
 			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 
@@ -449,7 +403,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 		var _ = It("fail because of wrong namespace, but no error", func() {
 			var err error
 			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 			request = ctrl.Request{
@@ -473,7 +426,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 			request = ctrl.Request{
@@ -486,9 +438,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			reconciler = N5010NodeReconciler{Client: k8sClient, log: log,
 				namespace: request.NamespacedName.Namespace,
 				nodeName:  "gf",
-				fortville: FortvilleManager{
-					Log: log.WithName("fortvilleManager"),
-				},
 				fpga: FPGAManager{
 					Log: log.WithName("fpgaManager"),
 				},
@@ -512,7 +461,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 			request = ctrl.Request{
@@ -525,9 +473,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			reconciler = N5010NodeReconciler{Client: k8sClient, log: log,
 				namespace: request.NamespacedName.Namespace,
 				nodeName:  "gf",
-				fortville: FortvilleManager{
-					Log: log.WithName("fortvilleManager"),
-				},
 				fpga: FPGAManager{
 					Log: log.WithName("fpgaManager"),
 				},
@@ -540,20 +485,11 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			var err error
 
 			n5010node.Spec.FPGA = nil
-			n5010node.Spec.Fortville = &fpgav1.N5010Fortville{
-				MACs: []fpgav1.FortvilleMAC{
-					{
-						MAC: "00:00:00:00:00:00",
-					},
-				},
-				FirmwareURL: "/tmp/fake/bin",
-			}
 
 			err = k8sClient.Create(context.Background(), n5010node)
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 			request = ctrl.Request{
@@ -566,67 +502,9 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			reconciler = N5010NodeReconciler{Client: k8sClient, log: log,
 				namespace: request.NamespacedName.Namespace,
 				nodeName:  "gf",
-				fortville: FortvilleManager{
-					Log: log.WithName("fortvilleManager"),
-				},
 				fpga: FPGAManager{
 					Log: log.WithName("fpgaManager"),
 				},
-			}
-
-			_, err = (reconciler).Reconcile(context.TODO(), request)
-			Expect(err).ToNot(HaveOccurred())
-		})
-		var _ = It("will run Reconcile with misconfiugred DrainHelper", func() {
-			var err error
-
-			n5010node.Spec.FPGA = nil
-			n5010node.Spec.Fortville = &fpgav1.N5010Fortville{
-				MACs: []fpgav1.FortvilleMAC{
-					{
-						MAC: "64:4c:36:11:1b:a8",
-					},
-				},
-				FirmwareURL: "http://www.test.com/fortville/nvmPackage.tag.gz",
-			}
-
-			err = k8sClient.Create(context.Background(), n5010node)
-			Expect(err).ToNot(HaveOccurred())
-
-			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
-
-			log = klogr.New().WithName("N5010NodeReconciler-Test")
-			request = ctrl.Request{
-				NamespacedName: types.NamespacedName{
-					Namespace: namespace,
-					Name:      "gf",
-				},
-			}
-
-			srv := serverFortvilleMock()
-			defer srv.Close()
-
-			clientConfig := &restclient.Config{}
-			cset, err := clientset.NewForConfig(clientConfig)
-			Expect(err).ToNot(HaveOccurred())
-
-			err = os.Setenv("DRAIN_TIMEOUT_SECONDS", "5")
-			Expect(err).ToNot(HaveOccurred())
-
-			err = os.Setenv("LEASE_DURATION_SECONDS", "15")
-			Expect(err).ToNot(HaveOccurred())
-
-			reconciler = N5010NodeReconciler{Client: k8sClient, log: log,
-				namespace: request.NamespacedName.Namespace,
-				nodeName:  "gf",
-				fortville: FortvilleManager{
-					Log: log.WithName("fortvilleManager"),
-				},
-				fpga: FPGAManager{
-					Log: log.WithName("fpgaManager"),
-				},
-				drainHelper: dh.NewDrainHelper(log, cset, "node", "namespace"),
 			}
 
 			_, err = (reconciler).Reconcile(context.TODO(), request)
@@ -640,7 +518,6 @@ var _ = Describe("N5010 Daemon Tests", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// simulate creation of cluster config by the user
-			clusterConfig.Spec.Nodes[0].Fortville.FirmwareURL = "/tmp/dummy.bin"
 
 			log = klogr.New().WithName("N5010NodeReconciler-Test")
 

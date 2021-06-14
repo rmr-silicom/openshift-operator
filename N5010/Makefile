@@ -2,6 +2,8 @@
 # Copyright (c) 2020-2021 Intel Corporation
 include ../makefile.top
 
+export GOPATH=$(shell echo $$HOME)/go
+
 # Default k8s command-line tool exec
 # Supported channels
 CHANNELS ?= stable

@@ -4,6 +4,8 @@ include makefile.top
 
 .PHONY: $(TARGETS) tar
 
+export GOPATH=$(shell echo $$HOME)/go
+
 TARGETS := N5010 prometheus_fpgainfo_exporter
 ifeq ($(BUILD_SRIO_FEC),yes)
 	TARGETS += sriov-fec
