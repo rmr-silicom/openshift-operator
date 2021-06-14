@@ -12,7 +12,7 @@ BUILD_ARGS_RHEL82 = --build-arg CENTOS_VER=docker.io/centos:8.2.2004 --build-arg
 BUILD_ARGS_RHEL83 = --build-arg CENTOS_VER=docker.io/centos:8.3.2011 --build-arg RPM_URL=$(RHEL83_RPM) --build-arg KMODVER=$(KMODVER) --build-arg KVER=$(KVER_RHEL83)
 
 BUILDTOOL ?= podman
-IMAGE_NAME := dfl-kmod
+IMAGE_NAME := dfl-kmod-drivercontainer
 
 CONTAINER_BUILD_ARGS += $(BUILD_ARGS_RHEL82)
 TAG := $(KMODVER)-$(KVER_RHEL82)
