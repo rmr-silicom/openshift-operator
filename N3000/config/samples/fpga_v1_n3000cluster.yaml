@@ -2,14 +2,14 @@
 # Copyright (c) 2020 Intel Corporation
 
 apiVersion: fpga.intel.com/v1
-kind: N3000Node
+kind: N3000Cluster
 metadata:
   name: n3000
   namespace: intel-fpga-operators
 spec:
   nodes:
-    - nodeName: worker1
-      fpga:
-        - userImageURL: "http://10.100.1.78:8080/N5010/hw/green_bits/N5010_ofs-fim_PR_0_0_1__afu_example_axi_pim_unsigned.bin"
-          PCIAddr: "0000:00:04.0"
-          checksum: "890285f7304e01de546ac5a65574a8ab"
+  - nodeName: worker1
+    fpga:
+    - userImageURL: "http://10.100.1.78:8080/N5010/hw/green_bits/N5010_ofs-fim_PR_0_0_1__afu_example_axi_pim_unsigned.bin"
+      PCIAddr: "0000:02:00.0"
+      checksum: "890285f7304e01de546ac5a65574a8ab"
