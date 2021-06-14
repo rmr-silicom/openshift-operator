@@ -23,14 +23,18 @@ $(IMAGE_TARGETS):
 tar-others:
 	- rm -rf archives
 	mkdir archives
-	docker save $(IMAGE_REGISTRY)/dfl-kmod:eea9cbc-4.18.0-193.el8.x86_64 | gzip > archives/dfl-kmod.tar.gz
+	docker pull $(IMAGE_REGISTRY)/dfl-kmod-drivercontainer:eea9cbc-4.18.0-193.el8.x86_64
+	docker pull $(IMAGE_REGISTRY)/dfl-kmod:eea9cbc-4.18.0-193.el8.x86_64
 	docker pull gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0
+	docker save $(IMAGE_REGISTRY)/dfl-kmod:eea9cbc-4.18.0-193.el8.x86_64 | gzip > archives/dfl-kmod.tar.gz
+	docker save $(IMAGE_REGISTRY)/dfl-kmod-drivercontainer:eea9cbc-4.18.0-193.el8.x86_64 | gzip > archives/dfl-kmod-drivercontainer.tar.gz
 	docker tag gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0 $(IMAGE_REGISTRY)/kube-rbac-proxy:v0.5.0
 	docker save $(IMAGE_REGISTRY)/kube-rbac-proxy:v0.5.0 | gzip > archives/kube-rbac-proxy.tar.gz
 
 tar: tar-others
 	for img in $(IMAGES_TAR) ; do \
 	echo $(IMAGE_REGISTRY)/$$img:$(VERSION); \
+	docker pull $(IMAGE_REGISTRY)/$$img:$(VERSION); \
 	docker save $(IMAGE_REGISTRY)/$$img:$(VERSION) | gzip > archives/$$img.tar.gz ; \
 	done
 	tar -czvf intel-fpga-bundle.tar.gz archives
