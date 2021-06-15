@@ -13,3 +13,7 @@ N3000
 bin
 downloads
 prometheus_fpgainfo_exporter/common/
+N5010/docker/driver-container/files/
+N5010/docker/opae-image/files/
+N5010/files/*/*.rpm
+N5010/files/*/*.sh

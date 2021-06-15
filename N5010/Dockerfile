@@ -19,6 +19,7 @@ COPY main.go main.go
 COPY api/ api/
 COPY controllers/ controllers/
 COPY pkg/ pkg/
+COPY common/ common/
 
 # Build
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o manager main.go
@@ -44,5 +45,6 @@ WORKDIR /
 COPY --from=builder /workspace/manager .
 
 USER nobody
+COPY assets/ assets/
 
 ENTRYPOINT ["/manager"]

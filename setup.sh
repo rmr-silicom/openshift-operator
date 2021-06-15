@@ -12,7 +12,7 @@ if $(oc get ns -A | grep -q $ns) ; then
     oc delete ns $ns
 fi
 
-operator-sdk cleanup n3000 --verbose -n $ns
+operator-sdk cleanup n5010 --verbose -n $ns
 
 sleep 10
 
@@ -25,7 +25,7 @@ tar xvf $releases/0_0_1/N5010_ofs-fim_PR_gbs_0_0_1.tar.gz -C $install_dir --wild
 
 sleep 2
 
-operator-sdk run bundle quay.io/ryan_raasch/intel-fpga-bundle:v2.5.0 --timeout 300s --verbose -n $ns
+operator-sdk run bundle quay.io/ryan_raasch/intel-fpga-bundle:v2.5.0 --timeout 600s --verbose -n $ns
 
 sleep 15
 

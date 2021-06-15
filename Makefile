@@ -39,7 +39,10 @@ tar: tar-others
 	docker pull $(IMAGE_REGISTRY)/$$img:$(VERSION); \
 	docker save $(IMAGE_REGISTRY)/$$img:$(VERSION) | gzip > archives/$$img.tar.gz ; \
 	done
-	tar -czvf intel-fpga-bundle.tar.gz archives
+	cp -av $base/N5010/config/samples/*.yaml archives/
+	echo "operator-sdk run bundle quay.io/ryan_raasch/intel-fpga-bundle:$(VERSION) --timeout 300s --verbose -n intel-fpga-operators" > archives/README
+	echo "operator-sdk cleanup n5010 --verbose -n intel-fpga-operators" >> archives/README
+	tar -czvf intel-fpga-bundle-$(VERSION).tar.gz archives
 
 $(PUSH_TARGETS):
 	make -C $(subst -push,,$@) push

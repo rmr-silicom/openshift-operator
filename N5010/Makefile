@@ -101,10 +101,15 @@ kustomize:
 
 .PHONY: image-daemon push-daemon
 image-daemon:
+	cp -av ../common/ .
 	cp ../LICENSE TEMP_LICENSE_COPY
 	$(PODMAN) build . -f Dockerfile.daemon -t $(DAEMON_IMAGE) $(CONTAINER_BUILD_ARGS)
 push-daemon:
 	$(PODMAN) push $(DAEMON_IMAGE) $(CONTAINER_PUSH_ARGS)
+
+.PHONY: push-labeler image-labeler
+image-labeler push-labeler:
+	make -C ../labeler $(subst -labeler,,$@)
 
 .PHONY: push-prometheus_fpgainfo_exporter image-prometheus_fpgainfo_exporter
 image-prometheus_fpgainfo_exporter push-prometheus_fpgainfo_exporter:
@@ -118,11 +123,11 @@ push-operator:
 	$(PODMAN) push $(OPERATOR_IMAGE) $(CONTAINER_PUSH_ARGS)
 
 # Build all the images
-image: image-daemon image-operator image-prometheus_fpgainfo_exporter
-image-bundle: image-daemon image-operator image-prometheus_fpgainfo_exporter
+image: image-daemon image-operator image-labeler image-prometheus_fpgainfo_exporter
+image-bundle: image-daemon image-operator image-labeler image-prometheus_fpgainfo_exporter
 
 # Push all the images
-push: push-daemon push-operator push-bundle push-prometheus_fpgainfo_exporter
+push: push-daemon push-operator push-labeler push-bundle push-prometheus_fpgainfo_exporter
 
 check-operator-sdk-version:
 	make -C .. check-operator-sdk-version

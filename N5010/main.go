@@ -8,6 +8,7 @@ import (
 	"flag"
 	"os"
 	"strings"
+	"time"
 
 	secv1 "github.com/openshift/api/security/v1"
 	promv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
@@ -23,6 +24,7 @@ import (
 
 	fpgav1 "github.com/rmr-silicom/openshift-operator/N5010/api/v1"
 	"github.com/rmr-silicom/openshift-operator/N5010/controllers"
+	"github.com/rmr-silicom/openshift-operator/common/pkg/assets"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -105,6 +107,47 @@ func main() {
 	}, owner)
 	if err != nil {
 		setupLog.Error(err, "Unable to get operator deployment")
+		os.Exit(1)
+	}
+
+	if err := (&assets.Manager{
+		Client:    c,
+		Log:       ctrl.Log.WithName("asset_manager").WithName("intel-fpga"),
+		EnvPrefix: "INTEL_FPGA_",
+		Scheme:    scheme,
+		Owner:     owner,
+		Assets: []assets.Asset{
+			{
+				Path:              "assets/100-labeler.yaml",
+				BlockingReadiness: assets.ReadinessPollConfig{Retries: 30, Delay: 20 * time.Second},
+			},
+		},
+	}).LoadAndDeploy(context.Background(), false); err != nil {
+		setupLog.Error(err, "failed to deploy the labeler")
+		os.Exit(1)
+	}
+
+	if err := (&assets.Manager{
+		Client:    c,
+		Log:       ctrl.Log.WithName("asset_manager").WithName("intel-fpga"),
+		EnvPrefix: "INTEL_FPGA_",
+		Scheme:    scheme,
+		Owner:     owner,
+		Assets: []assets.Asset{
+			{
+				Path:              "assets/200-driver-container.yaml",
+				BlockingReadiness: assets.ReadinessPollConfig{Retries: 30, Delay: 20 * time.Second},
+			},
+			{
+				Path: "assets/300-monitoring.yaml",
+			},
+			{
+				Path:              "assets/400-daemon.yaml",
+				BlockingReadiness: assets.ReadinessPollConfig{Retries: 30, Delay: 20 * time.Second},
+			},
+		},
+	}).LoadAndDeploy(context.Background(), true); err != nil {
+		setupLog.Error(err, "failed to deploy the assets")
 		os.Exit(1)
 	}
 
