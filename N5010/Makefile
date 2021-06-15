@@ -33,7 +33,7 @@ CRD_OPTIONS ?= "crd:trivialVersions=true,preserveUnknownFields=false"
 
 all: manager daemon
 
-.PHONY: push-driver image-daemon push-daemon image-operator push-operator image
+.PHONY: push-driver image-daemon push-daemon image-operator push-operator image generate manifest
 
 # Run tests
 ENVTEST_ASSETS_DIR=$(shell pwd)/testbin

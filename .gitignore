@@ -12,3 +12,4 @@ downloads/
 N3000
 bin
 downloads
+prometheus_fpgainfo_exporter/common/
