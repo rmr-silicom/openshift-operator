@@ -2,7 +2,7 @@
 # Copyright (c) 2020 Intel Corporation
 
 apiVersion: fpga.intel.com/v1
-kind: N5010Node
+kind: N5010Cluster
 metadata:
   name: n5010 # This is a default value, DEFAULT_N5010_CONFIG_NAME
   namespace: intel-fpga-operators
