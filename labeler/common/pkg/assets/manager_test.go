@@ -70,7 +70,7 @@ var _ = Describe("Asset Tests", func() {
 	var _ = Describe("Manager", func() {
 		var _ = It("Run Manager with no assets (setKernel false)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			manager := Manager{Client: k8sClient, Log: log}
 
@@ -79,7 +79,7 @@ var _ = Describe("Asset Tests", func() {
 		})
 		var _ = It("Run Manager with no assets (setKernel true)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			manager := Manager{Client: k8sClient, Log: log}
 
@@ -88,7 +88,7 @@ var _ = Describe("Asset Tests", func() {
 		})
 		var _ = It("Run Manager (setKernel true)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			assets := []Asset{
 				{
@@ -106,7 +106,7 @@ var _ = Describe("Asset Tests", func() {
 		})
 		var _ = It("Run Manager loadFromDir (setKernel false)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			assets := []Asset{
 				{
@@ -124,7 +124,7 @@ var _ = Describe("Asset Tests", func() {
 		})
 		var _ = It("Run Manager loadFromFile (setKernel false, no retries)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			assets := []Asset{
 				{
@@ -148,7 +148,7 @@ var _ = Describe("Asset Tests", func() {
 		})
 		var _ = It("Run Manager loadFromFile (setKernel false)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			assets := []Asset{
 				{
@@ -169,7 +169,7 @@ var _ = Describe("Asset Tests", func() {
 		})
 		var _ = It("Run LoadAndDeploy (fail setting Owner)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			var invalidObject InvalidRuntimeType
 
@@ -213,7 +213,7 @@ var _ = Describe("Asset Tests", func() {
 		})
 		var _ = It("Run Manager loadFromFile (bad file)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			assets := []Asset{
 				{
@@ -237,7 +237,7 @@ var _ = Describe("Asset Tests", func() {
 		})
 		var _ = It("Run Manager loadFromFile (missing file)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			assets := []Asset{
 				{
@@ -261,7 +261,7 @@ var _ = Describe("Asset Tests", func() {
 		})
 		var _ = It("Run Manager loadFromFile (invalid retries count)", func() {
 			var err error
-			log = klogr.New().WithName("N3000Assets-Test")
+			log = klogr.New().WithName("N5010Assets-Test")
 
 			assets := []Asset{
 				{

@@ -79,7 +79,7 @@ func NewDrainHelper(l logr.Logger, cs *clientset.Clientset, nodeName, namespace 
 
 	lock := &resourcelock.LeaseLock{
 		LeaseMeta: metav1.ObjectMeta{
-			Name:      "n3000-daemon-lease",
+			Name:      "n5010-daemon-lease",
 			Namespace: namespace,
 		},
 		Client: cs.CoordinationV1(),
@@ -135,7 +135,7 @@ func (dh *DrainHelper) Run(f func(context.Context) bool, drain bool) error {
 	defer func() {
 		// Following mitigation is needed because of the bug in the leader election's release functionality
 		// Release fails because the input (leader election record) is created incomplete (missing fields):
-		// Failed to release lock: Lease.coordination.k8s.io "n3000-daemon-lease" is invalid:
+		// Failed to release lock: Lease.coordination.k8s.io "n5010-daemon-lease" is invalid:
 		// ... spec.leaseDurationSeconds: Invalid value: 0: must be greater than 0
 		// When the leader election finishes (Run() ends), we need to clean up the Lease manually.
 		// See: https://github.com/kubernetes/kubernetes/pull/80954

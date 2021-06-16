@@ -1,6 +1,6 @@
 # N5010 openshift-operator
 
-oc apply -k N3000/config/default
+oc apply -k N5010/config/default
 
 # Image locations (relative to registry)
 
@@ -26,9 +26,9 @@ operator-sdk run bundle ryan_raasch/intel-fpga-bundle:v2.5.0 --verbose -n intel-
 # Copyright (c) 2020 Intel Corporation
 
 apiVersion: fpga.intel.com/v1
-kind: N3000Node
+kind: N5010Node
 metadata:
-  name: n3000
+  name: n5010
   namespace: intel-fpga-operators
 spec:
   nodes:

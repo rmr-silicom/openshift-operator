@@ -4,6 +4,8 @@ N3000/docker/driver-container/files/
 N3000/docker/opae-image/files/
 N3000/files/*/*.rpm
 N3000/files/*/*.sh
+N5010/common
+archives
 # duplicate license file used in dockerfiles
 TEMP_LICENSE_COPY
 .idea/*

@@ -35,7 +35,7 @@ func TestAPIs(t *testing.T) {
 	RegisterFailHandler(Fail)
 
 	RunSpecsWithDefaultAndCustomReporters(t,
-		"N3000 assets Suite",
+		"N5010 assets Suite",
 		[]Reporter{printer.NewlineReporter{}})
 }
 

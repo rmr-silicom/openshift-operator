@@ -28,7 +28,7 @@ func TestAPIs(t *testing.T) {
 	RegisterFailHandler(Fail)
 
 	RunSpecsWithDefaultAndCustomReporters(t,
-		"N3000 drainhelper Suite",
+		"N5010 drainhelper Suite",
 		[]Reporter{printer.NewlineReporter{}})
 }
 

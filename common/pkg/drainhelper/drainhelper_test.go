@@ -38,7 +38,7 @@ var _ = Describe("DrainHelper Tests", func() {
 		})
 
 		var _ = It("Create simple DrainHelper", func() {
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			dh := NewDrainHelper(log, &clientSet, "node", "namespace")
 			Expect(dh).ToNot(Equal(nil))
@@ -46,7 +46,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Create simple DrainHelper with invalid drain timeout", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			timeoutVal := 5
 			timeoutValStr := "0x" + strconv.Itoa(timeoutVal)
@@ -61,7 +61,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Create simple DrainHelper with invalid lease time duration", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			leaseVal := 5
 			leaseValStr := "0x" + strconv.Itoa(leaseVal)
@@ -76,7 +76,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Create and run simple DrainHelper with lease time too short", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			clientConfig := &restclient.Config{}
 			cset, err := clientset.NewForConfig(clientConfig)
@@ -91,7 +91,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Fail DrainHelper.cordonAndDrain because of no nodes", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			clientConfig := &restclient.Config{}
 			cset, err := clientset.NewForConfig(clientConfig)
@@ -106,7 +106,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Fail DrainHelper.uncordon because of no nodes", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			clientConfig := &restclient.Config{}
 			cset, err := clientset.NewForConfig(clientConfig)
@@ -121,7 +121,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Run logWriter", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			clientConfig := &restclient.Config{}
 			cset, err := clientset.NewForConfig(clientConfig)
@@ -143,7 +143,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Run OnPodDeletedOrEvicted", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			clientConfig := &restclient.Config{}
 			cset, err := clientset.NewForConfig(clientConfig)
@@ -158,7 +158,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Drain and cordon the node", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			// Create a Node
 			node := &corev1.Node{
@@ -186,7 +186,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Drain, cordon and uncordon the node", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 
 			// Create a Node
 			node := &corev1.Node{
@@ -217,7 +217,7 @@ var _ = Describe("DrainHelper Tests", func() {
 
 		var _ = It("Create and run simple DrainHelper", func() {
 			var err error
-			log = klogr.New().WithName("N3000DrainHelper-Test")
+			log = klogr.New().WithName("N5010DrainHelper-Test")
 			// Create a Node
 			node := &corev1.Node{
 				ObjectMeta: v1.ObjectMeta{

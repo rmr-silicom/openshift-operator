@@ -44,7 +44,7 @@ userNames:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: n3000-labeler-config
+  name: n5010-labeler-config
   namespace: vran-acceleration-operators
 data:
   accelerators.json: |
@@ -82,7 +82,7 @@ spec:
       serviceAccount: accelerator-discovery
       serviceAccountName: accelerator-discovery
       containers:
-      - image: "N3000_LABELER_IMAGE-123"
+      - image: "N5010_LABELER_IMAGE-123"
         name: accelerator-discovery
         securityContext:
           readOnlyRootFilesystem: true
@@ -98,7 +98,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: n3000-labeler-config
+            name: n5010-labeler-config
             items:
             - key: accelerators.json
               path: accelerators.json
