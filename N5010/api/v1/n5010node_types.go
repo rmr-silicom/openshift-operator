@@ -28,9 +28,10 @@ type N5010NodeSpec struct {
 	// FPGA devices to be updated
 	// +operator-sdk:csv:customresourcedefinitions:type=spec
 	FPGA []N5010Fpga `json:"fpga,omitempty"`
-	// Fortville devices to be updated
+	// Hssi devices to be updated
 	// +operator-sdk:csv:customresourcedefinitions:type=spec
-	DryRun bool `json:"dryRun,omitempty"`
+	Hssi   *N5010Hssi `json:"hssi,omitempty"`
+	DryRun bool       `json:"dryRun,omitempty"`
 	// Allows for updating devices without draining the node
 	DrainSkip bool `json:"drainSkip,omitempty"`
 }
@@ -42,6 +43,9 @@ type N5010NodeStatus struct {
 	// Provides information about FPGA inventory on the node
 	// +operator-sdk:csv:customresourcedefinitions:type=status
 	FPGA []N5010FpgaStatus `json:"fpga,omitempty"`
+	// Provides information about N5010 hssi invetory on the node
+	// +operator-sdk:csv:customresourcedefinitions:type=status
+	Hssi []N5010HssiStatus `json:"hssi,omitempty"`
 }
 
 type N5010FpgaStatus struct {
@@ -74,6 +78,23 @@ type N5010NodeList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []N5010Node `json:"items"`
+}
+
+type N5010HssiStatus struct {
+	N5010PCI string       `json:"N5010PCI,omitempty"`
+	NICs     []HssiStatus `json:"NICs,omitempty"`
+}
+
+type HssiStatus struct {
+	Name    string `json:"name,omitempty"`
+	PciAddr string `json:"PCIAddr,omitempty"`
+	Version string `json:"NVMVersion,omitempty"`
+	MAC     string `json:"MAC,omitempty"`
+}
+
+type N5010HssiStatusModules struct {
+	Type    string `json:"type,omitempty"`
+	Version string `json:"version,omitempty"`
 }
 
 func init() {

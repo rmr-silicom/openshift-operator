@@ -46,6 +46,7 @@ type N5010NodeReconciler struct {
 	namespace string
 
 	fpga FPGAManager
+	hssi HssiManager
 
 	drainHelper *dh.DrainHelper
 }
@@ -58,6 +59,9 @@ func NewN5010NodeReconciler(c client.Client, clientSet *clientset.Clientset, log
 		log:       log,
 		nodeName:  nodename,
 		namespace: namespace,
+		hssi: HssiManager{
+			Log: log.WithName("hssiManager"),
+		},
 		fpga: FPGAManager{
 			Log: log.WithName("fpgaManager"),
 		},
@@ -133,6 +137,12 @@ func (r *N5010NodeReconciler) CreateEmptyN5010NodeIfNeeded(c client.Client) erro
 func (r *N5010NodeReconciler) getNodeStatus(n *fpgav1.N5010Node) (fpgav1.N5010NodeStatus, error) {
 	log := r.log.WithName("getNodeStatus")
 
+	hssiStatus, err := r.hssi.getInventory()
+	if err != nil {
+		log.Error(err, "Failed to get hssi inventory")
+		return fpgav1.N5010NodeStatus{}, err
+	}
+
 	fpgaStatus, err := getFPGAInventory(r.log)
 	if err != nil {
 		log.Error(err, "Failed to get FPGA inventory")
@@ -141,6 +151,7 @@ func (r *N5010NodeReconciler) getNodeStatus(n *fpgav1.N5010Node) (fpgav1.N5010No
 
 	return fpgav1.N5010NodeStatus{
 		FPGA: fpgaStatus,
+		Hssi: hssiStatus,
 	}, nil
 }
 
@@ -223,6 +234,14 @@ func (r *N5010NodeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 		return ctrl.Result{}, nil
 	}
 
+	if N5010node.Spec.Hssi != nil {
+		err = r.hssi.verifyPreconditions(N5010node)
+		if err != nil {
+			r.updateFlashCondition(N5010node, metav1.ConditionFalse, FlashFailed, err.Error())
+			return ctrl.Result{}, nil
+		}
+	}
+
 	if N5010node.Spec.FPGA == nil {
 		log.V(4).Info("Nothing to do")
 		r.updateFlashCondition(N5010node, metav1.ConditionFalse, FlashNotRequested, "Inventory up to date")
@@ -260,6 +279,14 @@ func (r *N5010NodeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 			}
 		}
 
+		if N5010node.Spec.Hssi != nil {
+			err = r.hssi.flash(N5010node)
+			if err != nil {
+				log.Error(err, "Unable to flash hssi")
+				flashErr = err
+				return true
+			}
+		}
 		return true
 	}, !N5010node.Spec.DrainSkip)
 

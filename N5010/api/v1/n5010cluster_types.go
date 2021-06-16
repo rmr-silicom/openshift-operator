@@ -50,6 +50,21 @@ type N5010ClusterNode struct {
 	// +kubebuilder:validation:Pattern=[a-z0-9\.\-]+
 	NodeName string      `json:"nodeName"`
 	FPGA     []N5010Fpga `json:"fpga,omitempty"`
+	Hssi     *N5010Hssi  `json:"hssi,omitempty"`
+}
+
+type N5010Hssi struct {
+	// +kubebuilder:validation:Pattern=[a-zA-Z0-9\.\-\/]+
+	FirmwareURL string    `json:"firmwareURL"`
+	MACs        []HssiMAC `json:"MACs"`
+	// MD5 checksum verified against calculated one from downloaded nvmupdate package. Optional.
+	// +kubebuilder:validation:Pattern=`^[a-fA-F0-9]{32}$`
+	CheckSum string `json:"checksum,omitempty"`
+}
+
+type HssiMAC struct {
+	// +kubebuilder:validation:Pattern=`^[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}$`
+	MAC string `json:"MAC"`
 }
 
 // N5010ClusterSpec defines the desired state of N5010Cluster
