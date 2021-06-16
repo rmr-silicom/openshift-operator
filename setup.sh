@@ -12,6 +12,8 @@ if $(oc get ns -A | grep -q $ns) ; then
     oc delete ns $ns
 fi
 
+oc delete N5010Node worker1 -n intel-fpga-operators
+
 operator-sdk cleanup n5010 --verbose -n $ns
 
 sleep 10
