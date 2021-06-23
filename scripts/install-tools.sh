@@ -8,7 +8,7 @@ DOWNLOADS=$(realpath $BASE/../downloads)
 REQUIRED_OPERATOR_SDK_VERSION="${1:-v1.4.2}"
 SDK_URL="https://github.com/operator-framework/operator-sdk/releases/download"
 OPM_URL="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.6"
-OPM_FILE="opm-linux-4.6.28.tar.gz"
+OPM_FILE="opm-linux-4.6.34.tar.gz"
 OC_URL="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.6"
 OC_FILE="openshift-client-linux.tar.gz"
 
