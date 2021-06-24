@@ -4,6 +4,7 @@ set -xe
 
 BASE=$(dirname $(realpath "${BASH_SOURCE[0]}"))
 BIN=$(realpath $BASE/../bin)
+GOPATH=$(realpath $BASE/../bin)
 DOWNLOADS=$(realpath $BASE/../downloads)
 REQUIRED_OPERATOR_SDK_VERSION="${1:-v1.4.2}"
 SDK_URL="https://github.com/operator-framework/operator-sdk/releases/download"
@@ -40,5 +41,9 @@ if [ ! -e $BIN/oc ] ; then
     tar xvf $DOWNLOADS/$OC_FILE -C $BIN
 fi
 
-GOBIN=$BIN go get sigs.k8s.io/controller-tools/cmd/controller-gen
-GOBIN=$BIN go get sigs.k8s.io/kustomize/kustomize
+[ ! -e $GOPATH ] && mkdir -p $GOPATH
+
+GOBIN=$BIN GOPATH=$GOPATH go get sigs.k8s.io/controller-tools/cmd/controller-gen
+GOBIN=$BIN GOPATH=$GOPATH go get sigs.k8s.io/kustomize/kustomize
+
+chmod -R +w $GOPATH/*

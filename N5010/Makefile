@@ -2,6 +2,8 @@
 # Copyright (c) 2020-2021 Intel Corporation
 include ../makefile.top
 
+CLI_EXEC = ../bin/oc
+
 export GOPATH=$(shell echo $$HOME)/go
 
 # Default k8s command-line tool exec
@@ -60,12 +62,15 @@ daemon: generate fmt vet
 run: generate fmt vet manifests
 	go run ./main.go
 
+check-operator-sdk-version:
+	make -C .. check-operator-sdk-version
+
 # Install CRDs into a cluster
-install: manifests kustomize
+install: manifests kustomize check-operator-sdk-version
 	$(KUSTOMIZE) build config/crd | $(CLI_EXEC) apply -f -
 
 # Uninstall CRDs from a cluster
-uninstall: manifests kustomize
+uninstall: manifests kustomize check-operator-sdk-version
 	$(KUSTOMIZE) build config/crd | $(CLI_EXEC) delete -f -
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
