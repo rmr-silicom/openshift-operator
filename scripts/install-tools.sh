@@ -8,7 +8,7 @@ DOWNLOADS=$(realpath $BASE/../downloads)
 REQUIRED_OPERATOR_SDK_VERSION="${1:-v1.4.2}"
 SDK_URL="https://github.com/operator-framework/operator-sdk/releases/download"
 OPM_URL="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.6"
-OPM_FILE="opm-linux-4.6.34.tar.gz"
+
 OC_URL="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.6"
 OC_FILE="openshift-client-linux.tar.gz"
 
@@ -26,8 +26,13 @@ if [ ! -e $BIN/operator-sdk ] ; then
 fi
 
 if [ ! -e $BIN/opm ] ; then
-    curl -sL $OPM_URL/$OPM_FILE -o $DOWNLOADS/opm.tar.gz
-    tar xvf $DOWNLOADS/opm.tar.gz -C $BIN
+    for rev in $(seq 33 100); do
+        curl -sL $OPM_URL/opm-linux-4.6.$rev.tar.gz -o $DOWNLOADS/opm.tar.gz
+        if $(file $DOWNLOADS/opm.tar.gz | grep -q "gzip compressed data") ; then
+            tar xvf $DOWNLOADS/opm.tar.gz -C $BIN
+            break
+        fi
+    done
 fi
 
 if [ ! -e $BIN/oc ] ; then
