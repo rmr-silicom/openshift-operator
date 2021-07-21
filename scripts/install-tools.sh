@@ -43,7 +43,7 @@ fi
 
 [ ! -e $GOPATH ] && mkdir -p $GOPATH
 
-GOBIN=$BIN GOPATH=$GOPATH go get sigs.k8s.io/controller-tools/cmd/controller-gen
-GOBIN=$BIN GOPATH=$GOPATH go get sigs.k8s.io/kustomize/kustomize
+GOBIN=$BIN GOPATH=$GOPATH GO111MODULE=on go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.6.1
+GOBIN=$BIN GOPATH=$GOPATH GO111MODULE=on go get sigs.k8s.io/kustomize/kustomize
 
 chmod -R +w $GOPATH/*
