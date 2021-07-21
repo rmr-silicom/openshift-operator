@@ -7,7 +7,7 @@ BUILD_DRIVER_CONTAINER ?= no
 PODMAN ?= docker
 CLI_EXEC ?= bin/oc
 
-OPAE_RUNTIME_IMAGE ?= $(IMAGE_REGISTRY)/opae:v2.0.0
+OPAE_RUNTIME_IMAGE ?= $(IMAGE_REGISTRY)/opae-runtime:v2.0.0
 
 # Images URLs to use for all building/pushing image targets (in assets/*.yaml files)
 OPAE_IMAGE ?= $(IMAGE_REGISTRY)/opae:$(VERSION)

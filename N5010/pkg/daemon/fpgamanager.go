@@ -177,7 +177,7 @@ func (fpga *FPGAManager) UpdateFW(file string, PCIAddr string, idx int, dryRun b
 func (fpga *FPGAManager) ProgramFPGA(file string, PCIAddr string, idx int, dryRun bool) error {
 	log := fpga.Log.WithName("ProgramFPGA").WithValues("pci", PCIAddr)
 
-	err := fpgasUpdateExec(exec.Command(fpgasUpdatePath, file), fpga.Log, dryRun)
+	err := fpgasUpdateExec(exec.Command(fpgasUpdatePath, file, PCIAddr), fpga.Log, dryRun)
 	if err != nil {
 		log.Error(err, "Failed to execute fpgaupdate")
 		return err
