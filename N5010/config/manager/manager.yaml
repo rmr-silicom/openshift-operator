@@ -24,7 +24,7 @@ spec:
         args:
         - --leader-elect
         - --zap-log-level=10
-        image: ryan_raasch/intel-fpga-operator:v2.5.0
+        image: quay.io/ryan_raasch/intel-fpga-operator:v2.5.0
         imagePullPolicy: Always
         name: manager
         securityContext:
@@ -50,15 +50,15 @@ spec:
             memory: 20Mi
         env:
         - name: INTEL_FPGA_DAEMON_IMAGE
-          value: ryan_raasch/intel-fpga-daemon:v2.5.0
+          value: quay.io/ryan_raasch/intel-fpga-daemon:v2.5.0
         - name: INTEL_FPGA_MONITORING_IMAGE
-          value: ryan_raasch/intel-fpga-monitoring:v2.5.0
+          value: quay.io/ryan_raasch/intel-fpga-monitoring:v2.5.0
         - name: INTEL_FPGA_LABELER_IMAGE
-          value: ryan_raasch/intel-fpga-labeler:v2.5.0
+          value: quay.io/ryan_raasch/intel-fpga-labeler:v2.5.0
         - name: INTEL_FPGA_NAMESPACE
           value: intel-fpga-operators
         - name: INTEL_FPGA_DRIVER_IMAGE
-          value: ryan_raasch/dfl-kmod-drivercontainer:eea9cbc-4.18.0-193.el8.x86_64
+          value: quay.io/ryan_raasch/dfl-kmod-drivercontainer:eea9cbc-4.18.0-193.el8.x86_64
         - name: NAME
           valueFrom:
             fieldRef:
