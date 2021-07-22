@@ -35,4 +35,6 @@ if ! $(docker ps -a | grep -q static-file-server) ; then
     docker run -d --name static-file-server --rm  -v ${install_dir}:/web -p ${WEB_PORT}:${WEB_PORT} -u $(id -u):$(id -g) halverneus/static-file-server:latest
 fi
 
-oc apply -f $base/N5010/config/samples/fpga_v1_n5010cluster.yaml
+echo "FIXME: fpga_v1_n5010cluster.yaml doesn't work!!!!"
+# oc apply -f $base/N5010/config/samples/fpga_v1_n5010cluster.yaml
+oc apply -f $base/N5010/config/samples/fpga_v1_n5010node.yaml
