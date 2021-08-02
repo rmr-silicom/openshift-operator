@@ -144,7 +144,8 @@ bundle: image check-operator-sdk-version manifests kustomize
 	$(OPERATOR_SDK) generate kustomize manifests -q
 	cd config/manager && $(KUSTOMIZE) edit set image operator=$(OPERATOR_IMAGE)
 	$(KUSTOMIZE) build config/manifests | envsubst | $(OPERATOR_SDK) generate bundle -q --overwrite --version $(subst v,,$(VERSION)) $(BUNDLE_METADATA_OPTS)
-	$(OPERATOR_SDK) bundle validate ./bundle
+	cp -v config/manifests/bases/intel-n5010-operator.clusterserviceversion.yaml bundle/manifests
+	$(OPERATOR_SDK) bundle validate ./bundle --select-optional name=operatorhub
 	FOLDER=. COPYRIGHT_FILE=../COPYRIGHT ../copyright.sh
 	cat ../COPYRIGHT bundle.Dockerfile >bundle.tmp
 	printf "\nLABEL com.redhat.openshift.versions=\"=v4.6\"\n" >> bundle.tmp
@@ -155,6 +156,7 @@ bundle: image check-operator-sdk-version manifests kustomize
 .PHONY: image-bundle
 image-bundle: bundle
 	$(PODMAN) build -f bundle.Dockerfile -t $(BUNDLE_IMG) .
+	$(OPERATOR_SDK) bundle validate --select-optional name=operatorhub $(BUNDLE_IMG)
 
 .PHONY: push-bundle
 push-bundle: image-bundle
