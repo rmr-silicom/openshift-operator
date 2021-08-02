@@ -6,7 +6,7 @@ BASE=$(dirname $(realpath "${BASH_SOURCE[0]}"))
 BIN=$(realpath $BASE/../bin)
 GOPATH=$(realpath $BASE/../bin)
 DOWNLOADS=$(realpath $BASE/../downloads)
-REQUIRED_OPERATOR_SDK_VERSION="${1:-v1.4.2}"
+REQUIRED_OPERATOR_SDK_VERSION="${1:-v1.10.0}"
 SDK_URL="https://github.com/operator-framework/operator-sdk/releases/download"
 OPM_URL="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.6"
 
