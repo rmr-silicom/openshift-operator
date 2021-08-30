@@ -1,13 +1,13 @@
 IMAGE_REGISTRY ?= quay.io/ryan_raasch
 REQUIRED_OPERATOR_SDK_VERSION ?= v1.10.0
-VERSION ?= v2.5.0
+VERSION ?= v2.5.2
 TLS_VERIFY ?= true
 BUILD_SRIO_FEC ?= no
 BUILD_DRIVER_CONTAINER ?= no
 PODMAN ?= docker
 CLI_EXEC ?= bin/oc
 
-OPAE_RUNTIME_IMAGE ?= $(IMAGE_REGISTRY)/opae-runtime:v2.0.0
+OPAE_RUNTIME_IMAGE ?= $(IMAGE_REGISTRY)/opae-runtime:v2.0.6-1
 
 # Images URLs to use for all building/pushing image targets (in assets/*.yaml files)
 OPAE_IMAGE ?= $(IMAGE_REGISTRY)/opae:$(VERSION)

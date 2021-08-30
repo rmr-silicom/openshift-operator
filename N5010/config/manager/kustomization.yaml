@@ -19,4 +19,4 @@ images:
   newTag: v1.1.0
 - name: operator
   newName: quay.io/ryan_raasch/intel-fpga-operator
-  newTag: v2.5.0
+  newTag: v2.5.2
